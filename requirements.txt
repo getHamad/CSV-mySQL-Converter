@@ -1,0 +1,3 @@
+# Requirements for the convertor project
+pandas==2.0.3
+python-dotenv==1.0.0
