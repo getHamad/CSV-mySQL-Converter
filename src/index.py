@@ -5,5 +5,5 @@ def main():
         
         dataframe = convertor(filePath="Your File Path")
 
-if main() == '__main__':
-        main()
+if __name__ == "__main__":
+   main()

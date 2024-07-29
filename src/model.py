@@ -75,11 +75,15 @@ class convertor:
         Returns:
             str: A message indicating the result of the cleaning operation.
         """
-        if self.columnsCheck() > 0:
-            self.dataframe = self.dataframe.dropna(how='any',axis=0)
+        try:  
+            if self.columnsCheck() > 0:
+                self.dataframe = self.dataframe.dropna(how='any',axis=0)
+            else:
+                return True ,f"Dataset is clear of any na/null values"
+        except Exception as e:
+            return False, f"An error occurred while cleaning columns of the selected dataframe | {e}"
         else:
-            return f"Dataset is clear of any na/null values"
-        return f"Dataframe has been updated and cleared of any na/null values"
+            return True ,f"Dataframe has been updated and cleared of any na/null values"
 
     def convertDataType(self, attr: str, dataType: str) -> tuple:
         """
@@ -217,13 +221,11 @@ class convertor:
                                     tuple_count -= 1
                                     body_statement = f"{body_statement}\n{tuple[0]} {tuple[1]},"
                                 else:
-                                    body_statement = f"{body_statement}\n{tuple[0]} {tuple[1]}\n);"
-                            
-                            print(f"{head_statement}\n{body_statement}")
+                                    body_statement = f"{body_statement}\n{tuple[0]} {tuple[1]}\n);\n"
                         except Exception as e:
                             return False, f"An error occurred while generating the SQL statement of the selected dataframe | {e}"
                         else:
-                            sql_statement = f"{head_statement}\n{body_statement}"
+                            sql_statement = f"{head_statement}{body_statement}"
                             return True, sql_statement
 
     def export_as_mysql(self, table_name:str = 'tableXyz', output:int = 2, path:str = "Output") -> tuple:
@@ -289,8 +291,14 @@ class convertor:
                                 return False, f"An error occurred while fetching data | {e}"
                             else:
                                     try:
+                                        counter = len(content)
                                         for record in content:
-                                            file.write(str(record) + ',' + '\n')
+                                            counter -= 1
+                                            if counter > 0:
+                                                file.write(str(record) + ',' + '\n')
+                                            else:
+                                                file.write(str(record) + ';')
+
                                     except Exception as e:
                                         return False, f"An error occurred while writing output file | {e}"
                                     else:
@@ -300,5 +308,3 @@ class convertor:
                                             return False, f"An error occurred while closing output file | {e}"
                                         else:
                                             return True, f"File has been created successfully!"
-
-
