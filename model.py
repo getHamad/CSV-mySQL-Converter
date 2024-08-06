@@ -7,7 +7,7 @@ class convertor:
     including cleaning, data type conversion, and exporting.
     """
     
-    def __init__(self, filePath:str = "C:/file/path/here") -> None:
+    def __init__(self, filePath:str = "C:/file/path/here.csv") -> None:
         """
         Initialize the class with the path to a CSV file and load it into a dataframe.
 
@@ -21,8 +21,6 @@ class convertor:
             self.dataframe = pd.read_csv(filePath, encoding='latin-1')
         except FileNotFoundError:
             print("File Not Found | The provided filepath is invalid")
-        except Exception:
-            return None
         else:
             print("File has been read successfully!")
         
@@ -35,12 +33,12 @@ class convertor:
         """
         return self.dataframe
     
-    def getInfo(self):
+    def getInfo(self) -> str:
         """
         Print a concise summary of the dataframe.
 
         Returns:
-            None
+            String: Summary of the dataframe
         """
         return self.getDataframe().info()
 
@@ -120,7 +118,6 @@ class convertor:
             except UserWarning:
                 return False, f"An error occurred while processing datatype options"
             else:
-                # Converting the datatype of that selected column
                 try:
                     self.dataframe = self.dataframe.astype({
                         f'{attr}': f'{dataType.lower()}'
@@ -207,7 +204,7 @@ class convertor:
                         if processed_columns != fetched_columns:
                             raise UserWarning
                         else:
-                            print(f'| Processed columns: {processed_columns}\n| Fetched columns: {fetched_columns}')
+                            print(f'| Processed columns: {processed_columns}\n| Fetched columns: {fetched_columns}') # to verify fetching process is successful
                     except UserWarning:
                         return False, f"An error occurred while validating the fetched datatypes of the selected dataframe | Not all columns are fetched, some are missing" # edit the return message
                     except Exception as e:
@@ -264,7 +261,7 @@ class convertor:
                 if state == False:
                     raise UserWarning
             except UserWarning:
-                state, content
+                state, imported_content
             else:
                 try:
                     file = open(path + ".txt", "w")

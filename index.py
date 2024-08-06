@@ -1,9 +1,8 @@
-import pandas as pd
 from model import convertor
 
 def main():
         
-        dataframe = convertor(filePath="Your File Path")
+        dataframe = convertor(filePath="assets/RTA Dataset.csv") # Dataframe Example
 
 if __name__ == "__main__":
    main()
